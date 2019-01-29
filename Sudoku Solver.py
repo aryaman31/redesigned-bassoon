@@ -1,4 +1,5 @@
 import copy
+# Enter the sudoku numbers into the 2D Array below 
 gameB = [["2"," "," "," "," ","7"," ","5"," "],
          [" "," "," "," "," "," ","3"," "," "],
          [" "," ","1","2"," ","8"," "," "," "],
@@ -10,7 +11,7 @@ gameB = [["2"," "," "," "," ","7"," ","5"," "],
          [" ","5"," "," "," "," "," ","9"," "]]
 
 
-def disp(board):
+def disp(board):   # This function displays the board with the spacing needed. 
     a = 0 
     for i in board:
         a = a + 1
@@ -28,11 +29,7 @@ def disp(board):
         if a%3 == 0 and a != 9:
             print("")
 
-def rawDisp(board):
-    for i in board:
-        print(i)
-
-def possiblity(gameD):
+def possiblity(gameD):   # Works out the numbers that can potentially take the place of an empty slot. 
     for i in range(0,9):
         for j in range(0,9):
             num = ["1","2","3","4","5","6","7","8","9"]
@@ -45,7 +42,7 @@ def possiblity(gameD):
                 gameD[i][j] = num
     return gameD
 
-def boxCut(gameD):
+def boxCut(gameD):       # Further reduces possibilies by removing numbers if they already exist within the sector. 
     for i in range(0,7,3):  # Looping through Whole sectors
         for j in range(0,7,3):
             temp = []
@@ -62,7 +59,7 @@ def boxCut(gameD):
                                 gameD[i+k][j+l].remove(m)
     return gameD
 
-def checker(gameD,listLeft,update):
+def checker(gameD,listLeft,update):    # Checks if there is only one possible number, and changes that location accordingly. 
     listLeft = False
     for i in range(0,9):
         for j in range(0,9):
@@ -73,7 +70,7 @@ def checker(gameD,listLeft,update):
                     gameD[i][j] = gameD[i][j][0]                  
     return gameD,listLeft,update
 
-def secCheck(gameD):
+def secCheck(gameD):     # More advanced check as checks weather it a number is the only possible number in that row/coloumn.
     # Horizontal Check
     update = False
     for num in range(1,10):
@@ -104,7 +101,7 @@ def secCheck(gameD):
             break
     return gameD, update
 
-def innerplay(gameD):
+def innerplay(gameD):   # Basic logic of the game
     listLeft = True
     temp = []
     update = True
@@ -118,13 +115,13 @@ def innerplay(gameD):
             gameD,update = secCheck(gameD)
     return gameD,listLeft, update
 
-def gameplay(gameD):
+def gameplay(gameD):  # Logic plus bruteforce(introduced later) if needed. 
     gameD,listLeft, update = innerplay(gameD)
     if not(solveChecker(gameD)):
         gameD = bruteforceV2(gameD)
     return listLeft, update, gameD
 
-def solveChecker(gameD):
+def solveChecker(gameD):    # Checks if the sudoku has been solved correctly. 
     correct = True
     for i in range(0,9):
         numh = ["1","2","3","4","5","6","7","8","9"]
@@ -137,7 +134,7 @@ def solveChecker(gameD):
                 correct = False
     return correct
 
-def bruteforceV2(game):
+def bruteforceV2(game):   # Guesses a number and attempts to solve
     solved = False
     for i in range(0,9):
         for j in range(0,9):
